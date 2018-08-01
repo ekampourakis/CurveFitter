@@ -11,6 +11,16 @@
         Return total
     End Function
 
+    ' Return the error squared.
+    Public Shared Function ErrorSquared(ByVal points As List(Of PointF), ByVal coeffs As List(Of Double)) As Double
+        Dim total As Double = 0
+        For Each pt As PointF In points
+            Dim dy As Double = pt.Y - PolynomialFunction(coeffs, pt.X)
+            total += dy * dy
+        Next pt
+        Return total
+    End Function
+
     Private Shared Function GaussianElimination(ByVal coeffs(,) As Double) As Double()
         Dim max_equation As Integer = coeffs.GetUpperBound(0)
         Dim max_coeff As Integer = coeffs.GetUpperBound(1)

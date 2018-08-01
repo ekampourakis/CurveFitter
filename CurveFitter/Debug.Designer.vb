@@ -24,6 +24,7 @@ Partial Class Debug
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Debug))
         Me.CurveFitter1 = New CurveFitter()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'CurveFitter1
@@ -32,25 +33,37 @@ Partial Class Debug
         Me.CurveFitter1.CurveLineColor = System.Drawing.Color.DodgerBlue
         Me.CurveFitter1.CurveMarkerColor = System.Drawing.Color.Red
         Me.CurveFitter1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.CurveFitter1.DotsOnly = False
+        Me.CurveFitter1.DotsOnly = True
         Me.CurveFitter1.FittingLineColor = System.Drawing.Color.Orange
         Me.CurveFitter1.LiveFitting = True
         Me.CurveFitter1.Location = New System.Drawing.Point(0, 0)
         Me.CurveFitter1.MaxX = 100.0R
         Me.CurveFitter1.MaxY = 25.0R
-        Me.CurveFitter1.MinX = 0R
-        Me.CurveFitter1.MinY = 0R
+        'Me.CurveFitter1.MinX = 0R
+        'Me.CurveFitter1.MinY = 0R
         Me.CurveFitter1.MultiDragFactor = 0.3R
         Me.CurveFitter1.Name = "CurveFitter1"
         Me.CurveFitter1.PolynomialCoefficients = CType(resources.GetObject("CurveFitter1.PolynomialCoefficients"), System.Collections.Generic.List(Of Double))
         Me.CurveFitter1.Size = New System.Drawing.Size(873, 450)
         Me.CurveFitter1.TabIndex = 0
+        Me.CurveFitter1.XAxisTitle = "RPM %"
+        Me.CurveFitter1.YAxisTitle = "A"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(31, 152)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 1
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'Debug
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(873, 450)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.CurveFitter1)
         Me.Name = "Debug"
         Me.Text = "Debug"
@@ -59,4 +72,5 @@ Partial Class Debug
     End Sub
 
     Friend WithEvents CurveFitter1 As CurveFitter
+    Friend WithEvents Button1 As Button
 End Class

@@ -23,15 +23,15 @@ Partial Class CurveFitter
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim DataPoint7 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(0R, 3.0R)
-        Dim DataPoint8 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(20.0R, 8.5R)
-        Dim DataPoint9 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(40.0R, 20.5R)
-        Dim DataPoint10 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(60.0R, 22.7R)
-        Dim DataPoint11 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(80.0R, 23.7R)
-        Dim DataPoint12 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(100.0R, 25.0R)
-        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim DataPoint1 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(0R, 3.0R)
+        Dim DataPoint2 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(20.0R, 8.5R)
+        Dim DataPoint3 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(40.0R, 20.5R)
+        Dim DataPoint4 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(60.0R, 22.7R)
+        Dim DataPoint5 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(80.0R, 23.7R)
+        Dim DataPoint6 As System.Windows.Forms.DataVisualization.Charting.DataPoint = New System.Windows.Forms.DataVisualization.Charting.DataPoint(100.0R, 25.0R)
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.CurveChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.MenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ToolStripMenuItem_IncreasePrecision = New System.Windows.Forms.ToolStripMenuItem()
@@ -45,37 +45,42 @@ Partial Class CurveFitter
         Me.CurveChart.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        ChartArea2.AxisX.Maximum = 100.0R
-        ChartArea2.AxisX.Minimum = 0R
-        ChartArea2.AxisY.Maximum = 25.0R
-        ChartArea2.AxisY.Minimum = 0R
-        ChartArea2.Name = "Main"
-        Me.CurveChart.ChartAreas.Add(ChartArea2)
+        ChartArea1.AxisX.Maximum = 100.0R
+        ChartArea1.AxisX.Minimum = 0R
+        ChartArea1.AxisX.Title = "RPM %"
+        ChartArea1.AxisY.Maximum = 25.0R
+        ChartArea1.AxisY.Minimum = 0R
+        ChartArea1.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal
+        ChartArea1.AxisY.Title = "A"
+        ChartArea1.Name = "Main"
+        Me.CurveChart.ChartAreas.Add(ChartArea1)
         Me.CurveChart.ContextMenuStrip = Me.MenuStrip
         Me.CurveChart.Location = New System.Drawing.Point(3, 3)
         Me.CurveChart.Name = "CurveChart"
-        Series3.BorderWidth = 5
-        Series3.ChartArea = "Main"
-        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series3.CustomProperties = "IsXAxisQuantitative=False"
-        Series3.MarkerBorderWidth = 0
-        Series3.MarkerColor = System.Drawing.Color.Red
-        Series3.MarkerSize = 20
-        Series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle
-        Series3.Name = "Curve"
-        Series3.Points.Add(DataPoint7)
-        Series3.Points.Add(DataPoint8)
-        Series3.Points.Add(DataPoint9)
-        Series3.Points.Add(DataPoint10)
-        Series3.Points.Add(DataPoint11)
-        Series3.Points.Add(DataPoint12)
-        Series4.BorderColor = System.Drawing.Color.Red
-        Series4.BorderWidth = 5
-        Series4.ChartArea = "Main"
-        Series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
-        Series4.Name = "Polynomial"
-        Me.CurveChart.Series.Add(Series3)
-        Me.CurveChart.Series.Add(Series4)
+        Series1.BorderWidth = 5
+        Series1.ChartArea = "Main"
+        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series1.CustomProperties = "IsXAxisQuantitative=False"
+        Series1.Legend = "Legend1"
+        Series1.MarkerBorderWidth = 0
+        Series1.MarkerColor = System.Drawing.Color.Red
+        Series1.MarkerSize = 20
+        Series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle
+        Series1.Name = "Curve"
+        Series1.Points.Add(DataPoint1)
+        Series1.Points.Add(DataPoint2)
+        Series1.Points.Add(DataPoint3)
+        Series1.Points.Add(DataPoint4)
+        Series1.Points.Add(DataPoint5)
+        Series1.Points.Add(DataPoint6)
+        Series2.BorderColor = System.Drawing.Color.Red
+        Series2.BorderWidth = 5
+        Series2.ChartArea = "Main"
+        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline
+        Series2.Legend = "Legend1"
+        Series2.Name = "Polynomial"
+        Me.CurveChart.Series.Add(Series1)
+        Me.CurveChart.Series.Add(Series2)
         Me.CurveChart.Size = New System.Drawing.Size(829, 487)
         Me.CurveChart.TabIndex = 0
         '
@@ -88,13 +93,13 @@ Partial Class CurveFitter
         'ToolStripMenuItem_IncreasePrecision
         '
         Me.ToolStripMenuItem_IncreasePrecision.Name = "ToolStripMenuItem_IncreasePrecision"
-        Me.ToolStripMenuItem_IncreasePrecision.Size = New System.Drawing.Size(180, 22)
+        Me.ToolStripMenuItem_IncreasePrecision.Size = New System.Drawing.Size(172, 22)
         Me.ToolStripMenuItem_IncreasePrecision.Text = "Increase Precision"
         '
         'ToolStripMenuItem_DecreasePrecision
         '
         Me.ToolStripMenuItem_DecreasePrecision.Name = "ToolStripMenuItem_DecreasePrecision"
-        Me.ToolStripMenuItem_DecreasePrecision.Size = New System.Drawing.Size(180, 22)
+        Me.ToolStripMenuItem_DecreasePrecision.Size = New System.Drawing.Size(172, 22)
         Me.ToolStripMenuItem_DecreasePrecision.Text = "Decrease Precision"
         '
         'CurveFitter
