@@ -9,36 +9,79 @@ End Enum
 
 Public Class CurveFitter
 
-    Private MaxPoints As Integer = 20
-
-    'Public Property Equation As String
-    '    Get
-    '        Return GetEquation()
-    '    End Get
-    '    Set(value As String)
-
-    '    End Set
-    'End Property
+    Private Const MaxPoints As Integer = 23
+    Private Const AutoTuneInterpolation As Integer = 3
+    Private Const MultiDragButton As MouseButtons = MouseButtons.Middle
 
 #Region "Properties"
-    Private _LiveFitting As Boolean = False
+    ' Private variables
+    Private _LiveCurve As Boolean = False
     Private _CurveType As GraphType = GraphType.Logarithmic
     Private _MaxX As Double = 100
     Private _MaxY As Double = 25
-    Private _CurveMarkerColor As Color = Color.Red
-    Private _CurveLineColor As Color = Color.DodgerBlue
-    Private _FittingLineColor As Color = Color.Orange
-    Private _DotsOnly As Boolean = False
-    Private _CurveFittingDegrees As Integer = 10
+    Private _DotColor As Color = Color.Red
+    Private _CurveColor As Color = Color.Orange
+    Private _BorderBackColor As Color = Color.White
+    Private _BackColor As Color = Color.White
+    Private _PolynomialDegrees As Integer = 10
     Private _PolynomialCoefficients As New List(Of Double)
     Private _AutoSelectedDegrees As Integer = 7
 
-    Public Property MultiDragFactor As Double = 0.3
-    Public Property UseSinglePrecision As Boolean = False
-    Public Property AutoSelectDegrees As Boolean = True
-    Public Property MinDegrees As Integer = 5
-    Public Property MaxDegrees As Integer = 15
+    ' Design properties
+    Public Property BorderBackColor As Color
+        Get
+            Return _BorderBackColor
+        End Get
+        Set(value As Color)
+            _BorderBackColor = value
+            CurveChart.BackColor = _BorderBackColor
+        End Set
+    End Property
+    Public Overrides Property BackColor As Color
+        Get
+            Return _BackColor
+        End Get
+        Set(value As Color)
+            _BackColor = value
+            CurveChart.ChartAreas(0).BackColor = _BackColor
+        End Set
+    End Property
+    Public Property DotColor As Color
+        Get
+            Return _DotColor
+        End Get
+        Set(value As Color)
+            _DotColor = value
+            CurveChart.Series(1).MarkerColor = _DotColor
+        End Set
+    End Property
+    Public Property CurveColor As Color
+        Get
+            Return _CurveColor
+        End Get
+        Set(value As Color)
+            _CurveColor = value
+            CurveChart.Series(0).Color = _CurveColor
+        End Set
+    End Property
+    Public Property XAxisTitle As String
+        Get
+            Return CurveChart.ChartAreas(0).AxisX.Title
+        End Get
+        Set(value As String)
+            CurveChart.ChartAreas(0).AxisX.Title = value
+        End Set
+    End Property
+    Public Property YAxisTitle As String
+        Get
+            Return CurveChart.ChartAreas(0).AxisY.Title
+        End Get
+        Set(value As String)
+            CurveChart.ChartAreas(0).AxisY.Title = value
+        End Set
+    End Property
 
+    '  Properties
     Public Property CurveType As GraphType
         Get
             Return _CurveType
@@ -68,70 +111,16 @@ Public Class CurveFitter
             AddInitialDots(GraphType.Logarithmic)
         End Set
     End Property
-    Public Property CurveMarkerColor As Color
+    Public Property PolynomialDegrees As Integer
         Get
-            Return _CurveMarkerColor
-        End Get
-        Set(value As Color)
-            _CurveMarkerColor = value
-            CurveChart.Series(0).MarkerColor = _CurveMarkerColor
-        End Set
-    End Property
-    Public Property CurveLineColor As Color
-        Get
-            Return _CurveLineColor
-        End Get
-        Set(value As Color)
-            _CurveLineColor = value
-            CurveChart.Series(0).Color = _CurveLineColor
-        End Set
-    End Property
-    Public Property FittingLineColor As Color
-        Get
-            Return _FittingLineColor
-        End Get
-        Set(value As Color)
-            _FittingLineColor = value
-            CurveChart.Series(1).Color = _FittingLineColor
-        End Set
-    End Property
-    Public Property DotsOnly As Boolean
-        Get
-            Return _DotsOnly
-        End Get
-        Set(value As Boolean)
-            _DotsOnly = value
-            If _DotsOnly Then
-                CurveChart.Series(0).BorderWidth = 0
-            Else
-                CurveChart.Series(0).BorderWidth = 5
-            End If
-        End Set
-    End Property
-    Public Property XAxisTitle As String
-        Get
-            Return CurveChart.ChartAreas(0).AxisX.Title
-        End Get
-        Set(value As String)
-            CurveChart.ChartAreas(0).AxisX.Title = value
-        End Set
-    End Property
-    Public Property YAxisTitle As String
-        Get
-            Return CurveChart.ChartAreas(0).AxisY.Title
-        End Get
-        Set(value As String)
-            CurveChart.ChartAreas(0).AxisY.Title = value
-        End Set
-    End Property
-    Public Property CurveFittingDegrees As Integer
-        Get
-            Return _CurveFittingDegrees
+            Return _PolynomialDegrees
         End Get
         Set(value As Integer)
-            _CurveFittingDegrees = value
-            If LiveFitting Then
-                FitCurve(_CurveFittingDegrees)
+            If Not AutoSelectDegrees Then
+                _PolynomialDegrees = value
+                If LiveCurve Then
+                    FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
+                End If
             End If
         End Set
     End Property
@@ -147,24 +136,29 @@ Public Class CurveFitter
             _PolynomialCoefficients = value
         End Set
     End Property
-    Public Property LiveFitting As Boolean
+    Public Property LiveCurve As Boolean
         Get
-            Return _LiveFitting
+            Return _LiveCurve
         End Get
         Set(value As Boolean)
-            _LiveFitting = value
-            If _LiveFitting Then
-                FitCurve(If(AutoSelectDegrees, AutoTuneDegrees(), _CurveFittingDegrees))
+            _LiveCurve = value
+            If _LiveCurve Then
+                FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
             Else
                 _PolynomialCoefficients = New List(Of Double)
-                CurveChart.Series(1).Points.Clear()
+                CurveChart.Series(0).Points.Clear()
             End If
         End Set
     End Property
+
+    Public Property MultiDragFactor As Double = 0.3
+    Public Property UseSinglePrecision As Boolean = False
+    Public Property AutoSelectDegrees As Boolean = True
+    Public Property MinDegrees As Integer = 5
+    Public Property MaxDegrees As Integer = 10
 #End Region
 
 #Region "PointDragging"
-    Private MultiDragButton As MouseButtons = MouseButtons.Middle
     Private SelectedPoint As DataPoint = Nothing
     Private SelectedPointIndex As Integer = -1
     Private IsDraggingPoint As Boolean = False
@@ -194,7 +188,7 @@ Public Class CurveFitter
         IsDraggingPoint = False
         IsMultiDragging = False
         If AutoSelectDegrees Then
-            FitCurve(AutoTuneDegrees())
+            FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
         End If
     End Sub
     Private Sub CurveChart_MouseMove(sender As Object, e As MouseEventArgs) Handles CurveChart.MouseMove
@@ -207,8 +201,8 @@ Public Class CurveFitter
             Dim dY As Double = NewY - SelectedPoint.YValues(0)
             SelectedPoint.XValue = SelectedPoint.XValue
             If IsMultiDragging Then
-                For Index As Integer = 0 To CurveChart.Series(0).Points.Count - 1
-                    Dim TmpSelectedPoint = CurveChart.Series(0).Points(Index)
+                For Index As Integer = 0 To CurveChart.Series(1).Points.Count - 1
+                    Dim TmpSelectedPoint = CurveChart.Series(1).Points(Index)
                     Dim Distance As Double = Math.Abs(Index - SelectedPointIndex)
                     Dim Factor As Double = MultiDragFactor ^ Distance
                     NewY = Factor * dY + TmpSelectedPoint.YValues(0)
@@ -221,93 +215,17 @@ Public Class CurveFitter
                     SelectedPoint.SetValueY(NewY)
                 End If
             End If
-            If LiveFitting Then
-                FitCurve(_CurveFittingDegrees)
+            If LiveCurve Then
+                ' Uncomment if you want live auto tuning of the polynomial degrees
+                ' May be hard on the eyes
+                ' FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
+                FitCurve(_PolynomialDegrees)
             End If
         End If
     End Sub
 #End Region
 
-
-    Public Sub FitCurve(ByVal Degrees As Integer)
-        _CurveFittingDegrees = Degrees
-        Dim DataPoints As New List(Of PointF)
-        For Each ChartPoint As DataPoint In CurveChart.Series(0).Points
-            DataPoints.Add(New PointF(ChartPoint.XValue, ChartPoint.YValues(0)))
-        Next
-        _PolynomialCoefficients.Clear()
-        _PolynomialCoefficients.AddRange(FindPolynomialLeastSquaresFit(DataPoints, Degrees))
-        CurveChart.Series(1).Points.Clear()
-        For Index As Integer = 0 To MaxX
-            CurveChart.Series(1).Points.AddXY(Index, PolynomialFunction(_PolynomialCoefficients, Index))
-        Next
-    End Sub
-
-    Public Sub Reset()
-        Clear()
-        IsDraggingPoint = False
-        IsMultiDragging = False
-        SelectedPoint = Nothing
-        SelectedPointIndex = -1
-        _MaxX = 100
-        _MaxY = 25
-    End Sub
-
-    Public Sub Clear()
-        _PolynomialCoefficients.Clear()
-        CurveChart.Series(0).Points.Clear()
-        CurveChart.Series(1).Points.Clear()
-    End Sub
-
-    Public Sub DoublePrecision()
-        Dim Points As DataPointCollection = CurveChart.Series(0).Points
-        Dim Count As Integer = Points.Count
-        If Count < MaxPoints / 2 Then
-            For Index As Integer = 1 To Count - 1
-                Dim X = (Points(2 * Index - 2).XValue + Points(2 * Index - 1).XValue) / 2
-                Dim Y As Double = (Points(2 * Index - 2).YValues(0) + Points(2 * Index - 1).YValues(0)) / 2
-                CurveChart.Series(0).Points.InsertXY(2 * Index - 1, X, Y)
-            Next
-            If LiveFitting Then
-                FitCurve(_CurveFittingDegrees)
-            End If
-        End If
-    End Sub
-
-    Public Sub HalfPrecision()
-        Dim Points As DataPointCollection = CurveChart.Series(0).Points
-        Dim Count As Integer = Points.Count
-        If Count > 6 Then
-            For Index As Integer = 1 To Math.Floor(Count / 2)
-                CurveChart.Series(0).Points.RemoveAt(Index)
-            Next
-            If _LiveFitting Then
-                FitCurve(_CurveFittingDegrees)
-            End If
-        End If
-    End Sub
-
-    Public Function AutoTuneDegrees() As Integer
-        Dim BestDegree As Integer = -1
-        Dim MinError As Double = Math.Pow(10, 35)
-        Dim DataPoints As New List(Of PointF)
-        For Each ChartPoint As DataPoint In CurveChart.Series(0).Points
-            DataPoints.Add(New PointF(ChartPoint.XValue, ChartPoint.YValues(0)))
-        Next
-        Dim LinearError As Double = ErrorSquared(DataPoints, FindPolynomialLeastSquaresFit(DataPoints, 1))
-        For Degree As Integer = MinDegrees To MaxDegrees
-            Dim ErrorValue As Double = Math.Abs(LinearError - ErrorSquared(DataPoints, FindPolynomialLeastSquaresFit(DataPoints, Degree)) * Math.Pow(10, 28))
-            If ErrorValue < MinError Then
-                BestDegree = Degree
-                MinError = ErrorValue
-            End If
-        Next
-        If BestDegree = -1 Then
-            Throw New Exception("Error too big. Please evaluate.")
-        End If
-        Return BestDegree
-    End Function
-
+#Region "Menu"
     Private Sub ToolStripMenuItem_IncreasePrecision_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem_IncreasePrecision.Click
         DoublePrecision()
     End Sub
@@ -316,35 +234,123 @@ Public Class CurveFitter
         HalfPrecision()
     End Sub
 
+    Public Sub DoublePrecision()
+        Dim Points As DataPointCollection = CurveChart.Series(1).Points
+        Dim Count As Integer = Points.Count
+        If Count < MaxPoints / 2 Then
+            For Index As Integer = 1 To Count - 1
+                Dim X = (Points(2 * Index - 2).XValue + Points(2 * Index - 1).XValue) / 2
+                Dim Y As Double = (Points(2 * Index - 2).YValues(0) + Points(2 * Index - 1).YValues(0)) / 2
+                CurveChart.Series(1).Points.InsertXY(2 * Index - 1, X, Y)
+            Next
+            If LiveCurve Then
+                FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
+            End If
+        End If
+    End Sub
+
+    Public Sub HalfPrecision()
+        Dim Points As DataPointCollection = CurveChart.Series(1).Points
+        Dim Count As Integer = Points.Count
+        If Count > 6 Then
+            For Index As Integer = 1 To Math.Floor(Count / 2)
+                CurveChart.Series(1).Points.RemoveAt(Index)
+            Next
+            If _LiveCurve Then
+                FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
+            End If
+        End If
+    End Sub
+#End Region
+
+    'Public Property Equation As String
+    '    Get
+    '        Return GetEquation()
+    '    End Get
+    '    Set(value As String)
+
+    '    End Set
+    'End Property
+
+    Public Sub FitCurve(ByVal Degrees As Integer)
+        _PolynomialDegrees = Degrees
+        Dim DataPoints As New List(Of PointF)
+        For Each ChartPoint As DataPoint In CurveChart.Series(1).Points
+            DataPoints.Add(New PointF(ChartPoint.XValue, ChartPoint.YValues(0)))
+        Next
+        _PolynomialCoefficients.Clear()
+        _PolynomialCoefficients.AddRange(FindPolynomialLeastSquaresFit(DataPoints, Degrees))
+        CurveChart.Series(0).Points.Clear()
+        For Index As Double = 0 To MaxX Step 0.5
+            CurveChart.Series(0).Points.AddXY(Index, PolynomialFunction(_PolynomialCoefficients, Index))
+        Next
+    End Sub
+
+    Public Function AutoTuneDegree() As Integer
+        Dim BestDegree As Integer = -1
+        Dim MinError As Double = If(UseSinglePrecision, Single.MaxValue, Double.MaxValue)
+        Dim ChartPoints As New List(Of PointF)
+        For Each Point As DataPoint In CurveChart.Series(1).Points
+            ChartPoints.Add(New PointF(Point.XValue, Point.YValues(0)))
+        Next
+        Dim DataPoints As New List(Of DataPoint)
+        DataPoints.Add(CurveChart.Series(1).Points(0))
+        For Index As Integer = 1 To CurveChart.Series(1).Points.Count - 1
+            Dim Previous As DataPoint = CurveChart.Series(1).Points(Index - 1)
+            Dim Current As DataPoint = CurveChart.Series(1).Points(Index)
+            Dim PointsBetween As Integer = AutoTuneInterpolation
+            Dim IncrementX As Double = (Current.XValue - Previous.XValue) / (PointsBetween + 1)
+            Dim IncrementY As Double = (Current.YValues(0) - Previous.YValues(0)) / (PointsBetween + 1)
+            For Index2 As Integer = 1 To PointsBetween
+                DataPoints.Add(New DataPoint(Previous.XValue + IncrementX * Index2, Previous.YValues(0) + IncrementY * Index2))
+            Next
+            DataPoints.Add(Current)
+        Next
+        For Degree As Integer = MinDegrees To MaxDegrees
+            Dim LinearError As Double = 0
+            Dim Coefficients As List(Of Double) = FindPolynomialLeastSquaresFit(ChartPoints, Degree)
+            For Each Point As DataPoint In DataPoints
+                LinearError += Math.Pow(Math.Abs(Point.YValues(0) - PolynomialFunction(Coefficients, Point.XValue)), 2)
+            Next
+            If LinearError < MinError Then
+                MinError = LinearError
+                BestDegree = Degree
+            End If
+        Next
+        If BestDegree = -1 Then
+            Throw New Exception("Error too big. Please evaluate.")
+        End If
+        Return BestDegree
+    End Function
+
     Private Sub CurveFitter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        LiveFitting = True
-        DotsOnly = True
+        LiveCurve = True
     End Sub
 
     Private Sub AddInitialDots(ByVal Optional Type As GraphType = GraphType.Linear, ByVal Optional Dots As Integer = 5)
-        CurveChart.Series(0).Points.Clear()
+        CurveChart.Series(1).Points.Clear()
         Select Case Type
             Case GraphType.Linear
                 For Index As Integer = 0 To Dots
-                    CurveChart.Series(0).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * Index / Dots, CurveChart.ChartAreas(0).AxisY.Maximum * Index / Dots)
+                    CurveChart.Series(1).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * Index / Dots, CurveChart.ChartAreas(0).AxisY.Maximum * Index / Dots)
                 Next
             Case GraphType.Exponential
-                CurveChart.Series(0).Points.AddXY(0, 0)
+                CurveChart.Series(1).Points.AddXY(0, 0)
                 Dim l As Double = Math.Log(CurveChart.ChartAreas(0).AxisY.Maximum + 1) / Dots
                 For Index As Integer = 1 To Dots
-                    CurveChart.Series(0).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * Index / Dots, Math.Pow(Math.E, l * Index) - 1)
+                    CurveChart.Series(1).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * Index / Dots, Math.Pow(Math.E, l * Index) - 1)
                 Next
             Case GraphType.Logarithmic
-                CurveChart.Series(0).Points.AddXY(0, 0)
+                CurveChart.Series(1).Points.AddXY(0, 0)
                 Dim n As Double = 1.18
                 Dim l As Double = Dots / (Math.Pow(n, CurveChart.ChartAreas(0).AxisY.Maximum) - 1)
                 Dim d As Double = -1 * Math.Log(l, n)
-                CurveChart.Series(0).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * 1 / Dots, (Math.Log(1 + l, n) + d) * 0.915)
+                CurveChart.Series(1).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * 1 / Dots, (Math.Log(1 + l, n) + d) * 0.915)
                 For Index As Integer = 2 To Dots
-                    CurveChart.Series(0).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * Index / Dots, Math.Log(Index + l, n) + d)
+                    CurveChart.Series(1).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * Index / Dots, Math.Log(Index + l, n) + d)
                 Next
         End Select
-        FitCurve(If(AutoTuneDegrees(), AutoTuneDegrees(), _CurveFittingDegrees))
+        FitCurve(If(AutoTuneDegree(), AutoTuneDegree(), _PolynomialDegrees))
     End Sub
 
     Public Sub New()
@@ -425,7 +431,7 @@ Public Class CurveFitter
         Return Result
     End Function
 
-    Public Function ExportCCode()
+    Public Function ExportCCode(ByVal Optional CoefficientsOnly As Boolean = True)
         Dim Result As String = "const double PolynomialCoefficients[" & _PolynomialCoefficients.Count & "] = {"
         Dim Row As Integer = 0
         Dim SingleList As List(Of Single) = DoubleToSingleList(_PolynomialCoefficients)
@@ -438,20 +444,23 @@ Public Class CurveFitter
             End If
         Next
         Result = Result.Substring(0, Result.Length - 2)
-        Result &= "}" & vbNewLine & vbNewLine
-        Result &= "double Polynomial(double x) {" & vbNewLine
-        Result &= vbTab & "double total = 0;" & vbNewLine
-        Result &= vbTab & "double x_factor = 1;" & vbNewLine
-        Result &= vbTab & "for (int i = 0; i < sizeof(PolynomialCoefficients)/sizeof(double) - 1; i++) {" & vbNewLine
-        Result &= vbTab & vbTab & "total += x_factor * PolynomialCoefficients[i];" & vbNewLine
-        Result &= vbTab & vbTab & "x_factor *= x;" & vbNewLine
-        Result &= vbTab & "}" & vbNewLine
-        Dim MaxY As Double = CurveChart.ChartAreas(0).AxisY.Maximum
-        Dim MinY As Double = CurveChart.ChartAreas(0).AxisY.Minimum
-        Result &= vbTab & "if (total > " & MaxX.ToString & ") { total = " & MaxX.ToString & "; }" & vbNewLine
-        Result &= vbTab & "if (total < 0) { total = 0; }" & vbNewLine
-        Result &= vbTab & "return total;" & vbNewLine
         Result &= "}"
+        If Not CoefficientsOnly Then
+            Result &= vbNewLine & vbNewLine
+            Result &= "double Polynomial(double x) {" & vbNewLine
+            Result &= vbTab & "double total = 0;" & vbNewLine
+            Result &= vbTab & "double x_factor = 1;" & vbNewLine
+            Result &= vbTab & "for (int i = 0; i < sizeof(PolynomialCoefficients)/sizeof(double) - 1; i++) {" & vbNewLine
+            Result &= vbTab & vbTab & "total += x_factor * PolynomialCoefficients[i];" & vbNewLine
+            Result &= vbTab & vbTab & "x_factor *= x;" & vbNewLine
+            Result &= vbTab & "}" & vbNewLine
+            Dim MaxY As Double = CurveChart.ChartAreas(0).AxisY.Maximum
+            Dim MinY As Double = CurveChart.ChartAreas(0).AxisY.Minimum
+            Result &= vbTab & "if (total > " & MaxX.ToString & ") { total = " & MaxX.ToString & "; }" & vbNewLine
+            Result &= vbTab & "if (total < 0) { total = 0; }" & vbNewLine
+            Result &= vbTab & "return total;" & vbNewLine
+            Result &= "}"
+        End If
         Return Result
     End Function
 

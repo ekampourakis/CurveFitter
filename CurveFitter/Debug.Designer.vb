@@ -29,13 +29,11 @@ Partial Class Debug
         '
         'CurveFitter1
         '
-        Me.CurveFitter1.CurveFittingDegrees = 10
-        Me.CurveFitter1.CurveLineColor = System.Drawing.Color.DodgerBlue
-        Me.CurveFitter1.CurveMarkerColor = System.Drawing.Color.Red
+        Me.CurveFitter1.PolynomialDegrees = 10
+        Me.CurveFitter1.DotColor = System.Drawing.Color.Red
         Me.CurveFitter1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.CurveFitter1.DotsOnly = True
-        Me.CurveFitter1.FittingLineColor = System.Drawing.Color.Orange
-        Me.CurveFitter1.LiveFitting = True
+        Me.CurveFitter1.CurveColor = System.Drawing.Color.Orange
+        Me.CurveFitter1.LiveCurve = True
         Me.CurveFitter1.Location = New System.Drawing.Point(0, 0)
         Me.CurveFitter1.MaxX = 100.0R
         Me.CurveFitter1.MaxY = 25.0R
