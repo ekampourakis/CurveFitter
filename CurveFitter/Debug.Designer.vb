@@ -33,8 +33,14 @@ Partial Class Debug
         Me.ListBox_Properties = New System.Windows.Forms.ListBox()
         Me.TextBox_About = New System.Windows.Forms.TextBox()
         Me.Curve = New CurveFitter()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Button_ExportCurve = New System.Windows.Forms.Button()
+        Me.Button_LoadCurve = New System.Windows.Forms.Button()
+        Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
+        Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.GroupBox_Output.SuspendLayout()
         Me.GroupBox_Properties.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox_Output
@@ -123,12 +129,12 @@ Partial Class Debug
         '
         Me.TextBox_About.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox_About.Location = New System.Drawing.Point(941, 298)
+        Me.TextBox_About.Location = New System.Drawing.Point(941, 352)
         Me.TextBox_About.Multiline = True
         Me.TextBox_About.Name = "TextBox_About"
         Me.TextBox_About.ReadOnly = True
         Me.TextBox_About.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox_About.Size = New System.Drawing.Size(257, 332)
+        Me.TextBox_About.Size = New System.Drawing.Size(257, 197)
         Me.TextBox_About.TabIndex = 3
         Me.TextBox_About.Text = resources.GetString("TextBox_About.Text")
         '
@@ -150,28 +156,70 @@ Partial Class Debug
         Me.Curve.Name = "Curve"
         Me.Curve.PolynomialCoefficients = CType(resources.GetObject("Curve.PolynomialCoefficients"), System.Collections.Generic.List(Of Double))
         Me.Curve.PolynomialDegrees = 6
-        Me.Curve.Size = New System.Drawing.Size(923, 618)
+        Me.Curve.Size = New System.Drawing.Size(923, 537)
         Me.Curve.TabIndex = 0
         Me.Curve.UseSinglePrecision = True
-        Me.Curve.XAxisTitle = "RPM %"
-        Me.Curve.YAxisTitle = "Amperes %"
+        Me.Curve.XAxisTitle = "Input %"
+        Me.Curve.YAxisTitle = "Output %"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.Button_ExportCurve)
+        Me.GroupBox1.Controls.Add(Me.Button_LoadCurve)
+        Me.GroupBox1.Location = New System.Drawing.Point(941, 298)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(257, 48)
+        Me.GroupBox1.TabIndex = 2
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Graph"
+        '
+        'Button_ExportCurve
+        '
+        Me.Button_ExportCurve.Location = New System.Drawing.Point(157, 19)
+        Me.Button_ExportCurve.Name = "Button_ExportCurve"
+        Me.Button_ExportCurve.Size = New System.Drawing.Size(94, 23)
+        Me.Button_ExportCurve.TabIndex = 1
+        Me.Button_ExportCurve.Text = "Export Curve"
+        Me.Button_ExportCurve.UseVisualStyleBackColor = True
+        '
+        'Button_LoadCurve
+        '
+        Me.Button_LoadCurve.Location = New System.Drawing.Point(6, 19)
+        Me.Button_LoadCurve.Name = "Button_LoadCurve"
+        Me.Button_LoadCurve.Size = New System.Drawing.Size(102, 23)
+        Me.Button_LoadCurve.TabIndex = 0
+        Me.Button_LoadCurve.Text = "Load Curve"
+        Me.Button_LoadCurve.UseVisualStyleBackColor = True
+        '
+        'OpenFileDialog
+        '
+        Me.OpenFileDialog.Filter = "Curve File|*.curve"
+        Me.OpenFileDialog.Title = "Load curve..."
+        '
+        'SaveFileDialog
+        '
+        Me.SaveFileDialog.Filter = "Curve File|*.curve"
+        Me.SaveFileDialog.Title = "Export curve..."
         '
         'Debug
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1210, 642)
+        Me.ClientSize = New System.Drawing.Size(1210, 561)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TextBox_About)
         Me.Controls.Add(Me.GroupBox_Properties)
         Me.Controls.Add(Me.GroupBox_Output)
         Me.Controls.Add(Me.Curve)
-        Me.MinimumSize = New System.Drawing.Size(1166, 576)
+        Me.MinimumSize = New System.Drawing.Size(1226, 600)
         Me.Name = "Debug"
         Me.ShowIcon = False
         Me.Text = "CurveFitter - Debug"
         Me.GroupBox_Output.ResumeLayout(False)
         Me.GroupBox_Properties.ResumeLayout(False)
         Me.GroupBox_Properties.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -187,4 +235,9 @@ Partial Class Debug
     Friend WithEvents Button_ExportCode As Button
     Friend WithEvents Button_ExportEquation As Button
     Friend WithEvents TextBox_About As TextBox
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Button_ExportCurve As Button
+    Friend WithEvents Button_LoadCurve As Button
+    Friend WithEvents OpenFileDialog As OpenFileDialog
+    Friend WithEvents SaveFileDialog As SaveFileDialog
 End Class

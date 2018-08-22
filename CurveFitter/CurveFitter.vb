@@ -400,13 +400,13 @@ Public Class CurveFitter
 
 
     Public Function GetEquation(ByVal Optional ComputerCompatible As Boolean = True) As String
-        Dim Result As String = If(ComputerCompatible, "f(x)=", "f(x) = ")
+        Dim Result As String = If(ComputerCompatible, "", "f(x) = ")
         For Index As Integer = _PolynomialCoefficients.Count - 1 To 2 Step -1
             If _PolynomialCoefficients(Index) <> 0 Then
-                Result &= _PolynomialCoefficients(Index).ToString & If(ComputerCompatible, " * (x ^ " & Index.ToString & ")", "x" & PowerToText(Index)) & " + "
+                Result &= _PolynomialCoefficients(Index).ToString & If(ComputerCompatible, "*pow(x," & Index.ToString & ")", "x" & PowerToText(Index)) & " + "
             End If
         Next
-        Result &= _PolynomialCoefficients(1).ToString & If(ComputerCompatible, " * x", "x")
+        Result &= _PolynomialCoefficients(1).ToString & If(ComputerCompatible, "*x", "x")
         Result &= If(_PolynomialCoefficients(0) <> 0, " + " & _PolynomialCoefficients(0).ToString, "")
         Result = Result.Replace("+ -", "- ")
         Result = If(ComputerCompatible, Result.Replace(" ", ""), Result)
@@ -430,7 +430,7 @@ Public Class CurveFitter
         Return Result
     End Function
 
-    Public Function ExportCCode(ByVal Optional CoefficientsOnly As Boolean = True)
+    Public Function ExportCCode(ByVal Optional CoefficientsOnly As Boolean = True) As String
         Dim Result As String = "// Polynomial coefficients for specific curve" & vbNewLine
         Result &= "float PolynomialCoefficients[" & _PolynomialCoefficients.Count & "] = {"
         Dim Row As Integer = 0
@@ -466,5 +466,17 @@ Public Class CurveFitter
         End If
         Return Result
     End Function
+
+    Public Function ExportPoints() As DataPointCollection
+        Return CurveChart.Series(1).Points
+    End Function
+
+    Public Sub LoadPoints(ByVal Points As List(Of DataPoint))
+        CurveChart.Series(1).Points.Clear()
+        For Each Point As DataPoint In Points
+            CurveChart.Series(1).Points.Add(Point)
+        Next
+    End Sub
+
 
 End Class
