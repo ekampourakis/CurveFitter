@@ -117,15 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CurveFitter1.PolynomialCoefficients" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="TextBox_About.Text" xml:space="preserve">
+    <value>Purpose:
+
+Present software converts points on the chart to a polynomial function that can be used to approximate the equation of the input curve. Out of bounds values are constrained to prevent errors. 
+
+Instructions:
+
+Use left click to drag single point.
+Use middle click to multi-drag points.
+Use right click to display the precision menu.
+
+Click "Export Code" to copy C, microprocessor friendly, code to clipboard.
+Click "Export Equation" to copy the polynomial equation to clipboard.
+
+Important Notice:
+
+Input range is [0.0, 100.0]. Outside this range the approximation error becomes too big. Please consider mapping input before using the code.</value>
+  </data>
+  <data name="Curve.PolynomialCoefficients" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAJoBbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1u
         ZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5XV0sIG1zY29ybGliLCBWZXJzaW9u
         PTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OQUB
         AAAAMFN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3RgMVtbU3lzdGVtLkRvdWJsZQMAAAAGX2l0
-        ZW1zBV9zaXplCF92ZXJzaW9uBwAABggIAgAAAAkDAAAACwAAAAwAAAAPAwAAAAwAAAAGaAEAAAAACEAJ
-        4zXxOzfgv61bVYZ/lq4/6Z26r1nIUr82AsBdYvXVPra7z8EMhlk+dfpQ2yf71L3Ku1ZzLydgPVCVC6w2
-        jfa8GdOu/y4ejbxtHiyRrlL5uwAAAAAAAAAACw==
+        ZW1zBV9zaXplCF92ZXJzaW9uBwAABggIAgAAAAkDAAAABwAAAAcAAAAPAwAAAAgAAAAGAAAAoBP7Zr0A
+        AACAZ7gTQAAAAIDHMb2/AAAAIFOaUj8AAACgAaSRPgAAAMD0iHW+AAAAgH2o+j0AAAAAAAAAAAs=
 </value>
   </data>
 </root>

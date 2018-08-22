@@ -9,6 +9,8 @@ End Enum
 
 Public Class CurveFitter
 
+    Public Event CurveUpdated(sender As Object, e As EventArgs)
+
     Private Const MaxPoints As Integer = 23
     Private Const AutoTuneInterpolation As Integer = 3
     Private Const MultiDragButton As MouseButtons = MouseButtons.Middle
@@ -18,7 +20,7 @@ Public Class CurveFitter
     Private _LiveCurve As Boolean = False
     Private _CurveType As GraphType = GraphType.Logarithmic
     Private _MaxX As Double = 100
-    Private _MaxY As Double = 25
+    Private _MaxY As Double = 100
     Private _DotColor As Color = Color.Red
     Private _CurveColor As Color = Color.Orange
     Private _BorderBackColor As Color = Color.White
@@ -91,7 +93,7 @@ Public Class CurveFitter
             AddInitialDots(_CurveType)
         End Set
     End Property
-    Public Property MaxX As Double
+    Private Property MaxX As Double
         Get
             Return _MaxX
         End Get
@@ -101,7 +103,7 @@ Public Class CurveFitter
             AddInitialDots(GraphType.Logarithmic)
         End Set
     End Property
-    Public Property MaxY As Double
+    Private Property MaxY As Double
         Get
             Return _MaxY
         End Get
@@ -284,6 +286,7 @@ Public Class CurveFitter
         For Index As Double = 0 To MaxX Step 0.5
             CurveChart.Series(0).Points.AddXY(Index, PolynomialFunction(_PolynomialCoefficients, Index))
         Next
+        RaiseEvent CurveUpdated(Me, New EventArgs())
     End Sub
 
     Public Function AutoTuneDegree() As Integer
@@ -342,7 +345,7 @@ Public Class CurveFitter
                 Next
             Case GraphType.Logarithmic
                 CurveChart.Series(1).Points.AddXY(0, 0)
-                Dim n As Double = 1.18
+                Dim n As Double = 1.05 '1.18 for chart till 25
                 Dim l As Double = Dots / (Math.Pow(n, CurveChart.ChartAreas(0).AxisY.Maximum) - 1)
                 Dim d As Double = -1 * Math.Log(l, n)
                 CurveChart.Series(1).Points.AddXY(CurveChart.ChartAreas(0).AxisX.Maximum * 1 / Dots, (Math.Log(1 + l, n) + d) * 0.915)
@@ -395,22 +398,18 @@ Public Class CurveFitter
         Return Result
     End Function
 
-    'Public Property Equation As String
-    '    Get
-    '        Return GetEquation()
-    '    End Get
-    '    Set(value As String)
 
-    '    End Set
-    'End Property
-
-    Public Function GetEquation() As String
-        Dim Result As String = ""
-        For Index As Integer = 0 To _PolynomialCoefficients.Count - 3
-            Result &= "x" & PowerToText(Index) & " + "
+    Public Function GetEquation(ByVal Optional ComputerCompatible As Boolean = True) As String
+        Dim Result As String = If(ComputerCompatible, "f(x)=", "f(x) = ")
+        For Index As Integer = _PolynomialCoefficients.Count - 1 To 2 Step -1
+            If _PolynomialCoefficients(Index) <> 0 Then
+                Result &= _PolynomialCoefficients(Index).ToString & If(ComputerCompatible, " * (x ^ " & Index.ToString & ")", "x" & PowerToText(Index)) & " + "
+            End If
         Next
-        Result &= _PolynomialCoefficients(_PolynomialCoefficients.Count - 2).ToString & " + "
-        Result &= _PolynomialCoefficients(_PolynomialCoefficients.Count - 1).ToString
+        Result &= _PolynomialCoefficients(1).ToString & If(ComputerCompatible, " * x", "x")
+        Result &= If(_PolynomialCoefficients(0) <> 0, " + " & _PolynomialCoefficients(0).ToString, "")
+        Result = Result.Replace("+ -", "- ")
+        Result = If(ComputerCompatible, Result.Replace(" ", ""), Result)
         Return Result
     End Function
 #End Region
@@ -432,7 +431,8 @@ Public Class CurveFitter
     End Function
 
     Public Function ExportCCode(ByVal Optional CoefficientsOnly As Boolean = True)
-        Dim Result As String = "const double PolynomialCoefficients[" & _PolynomialCoefficients.Count & "] = {"
+        Dim Result As String = "// Polynomial coefficients for specific curve" & vbNewLine
+        Result &= "float PolynomialCoefficients[" & _PolynomialCoefficients.Count & "] = {"
         Dim Row As Integer = 0
         Dim SingleList As List(Of Single) = DoubleToSingleList(_PolynomialCoefficients)
         For Each Item As Single In SingleList
@@ -447,17 +447,20 @@ Public Class CurveFitter
         Result &= "}"
         If Not CoefficientsOnly Then
             Result &= vbNewLine & vbNewLine
-            Result &= "double Polynomial(double x) {" & vbNewLine
-            Result &= vbTab & "double total = 0;" & vbNewLine
-            Result &= vbTab & "double x_factor = 1;" & vbNewLine
-            Result &= vbTab & "for (int i = 0; i < sizeof(PolynomialCoefficients)/sizeof(double) - 1; i++) {" & vbNewLine
+            Result &= "// Function to return the max output current scalar." & vbNewLine
+            Result &= "// Input x = RPM%, Range = [0.0, 100.0] ( % )" & vbNewLine
+            Result &= "// Output range = [0.0, 100.0] ( % )" & vbNewLine
+            Result &= "float GetCurrentFromRPM_Relative(float x) {" & vbNewLine
+            Result &= vbTab & "float total = 0.0;" & vbNewLine
+            Result &= vbTab & "float x_factor = 1.0;" & vbNewLine
+            Result &= vbTab & "for (int i = 0; i < sizeof(PolynomialCoefficients)/sizeof(float) - 1; i++) {" & vbNewLine
             Result &= vbTab & vbTab & "total += x_factor * PolynomialCoefficients[i];" & vbNewLine
             Result &= vbTab & vbTab & "x_factor *= x;" & vbNewLine
             Result &= vbTab & "}" & vbNewLine
             Dim MaxY As Double = CurveChart.ChartAreas(0).AxisY.Maximum
             Dim MinY As Double = CurveChart.ChartAreas(0).AxisY.Minimum
-            Result &= vbTab & "if (total > " & MaxX.ToString & ") { total = " & MaxX.ToString & "; }" & vbNewLine
-            Result &= vbTab & "if (total < 0) { total = 0; }" & vbNewLine
+            Result &= vbTab & "if (total > 100.0) { total = 100.0; }" & vbNewLine
+            Result &= vbTab & "if (total < 0.0) { total = 0.0; }" & vbNewLine
             Result &= vbTab & "return total;" & vbNewLine
             Result &= "}"
         End If

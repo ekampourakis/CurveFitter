@@ -42,10 +42,11 @@ Partial Class CurveFitter
         ChartArea1.AxisX.Maximum = 100.0R
         ChartArea1.AxisX.Minimum = 0R
         ChartArea1.AxisX.Title = "RPM %"
-        ChartArea1.AxisY.Maximum = 25.0R
+        ChartArea1.AxisY.IsLabelAutoFit = False
+        ChartArea1.AxisY.Maximum = 100.0R
         ChartArea1.AxisY.Minimum = 0R
-        ChartArea1.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal
-        ChartArea1.AxisY.Title = "A"
+        ChartArea1.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Rotated90
+        ChartArea1.AxisY.Title = "Amperes %"
         ChartArea1.BackColor = System.Drawing.Color.White
         ChartArea1.Name = "Main"
         Me.CurveChart.ChartAreas.Add(ChartArea1)
