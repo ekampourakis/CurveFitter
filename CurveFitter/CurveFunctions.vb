@@ -102,10 +102,15 @@
                 Next
             Next
         Next
-        ' Solve the equations.
-        Dim answer() As Double = GaussianElimination(coeffs)
-        ' Return the result converted into a List(Of Double).
-        Return answer.ToList()
+
+        Try
+            ' Solve the equations.
+            Dim answer() As Double = GaussianElimination(coeffs)
+            ' Return the result converted into a List(Of Double).
+            Return answer.ToList()
+        Catch ex As Exception
+            Return {0.0, 0.0}.ToList
+        End Try
     End Function
 
 End Class

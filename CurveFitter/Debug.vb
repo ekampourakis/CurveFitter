@@ -13,6 +13,8 @@ Public Class Debug
                 Curve.CurveType = GraphType.Exponential
             Case 2
                 Curve.CurveType = GraphType.Logarithmic
+            Case 3
+                Curve.CurveType = GraphType.Empty
         End Select
     End Sub
 
@@ -59,6 +61,26 @@ Public Class Debug
             Loop Until Line Is Nothing
             Curve.LoadPoints(Points)
             Reader.Dispose()
+        End If
+    End Sub
+
+    Private Sub TextBox_X_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox_X.KeyPress
+        e.Handled = Not (Char.IsDigit(e.KeyChar) Or Asc(e.KeyChar) = 8 Or ((e.KeyChar = "." Or e.KeyChar = ",") And (sender.Text.IndexOf(".") = -1 And sender.Text.IndexOf(",") = -1)))
+    End Sub
+
+    Private Sub TextBox_Y_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox_Y.KeyPress
+        e.Handled = Not (Char.IsDigit(e.KeyChar) Or Asc(e.KeyChar) = 8 Or ((e.KeyChar = "." Or e.KeyChar = ",") And (sender.Text.IndexOf(".") = -1 And sender.Text.IndexOf(",") = -1)))
+    End Sub
+
+    Private Sub Button_Insert_Click(sender As Object, e As EventArgs) Handles Button_Insert.Click
+        If TextBox_X.Text <> Nothing And TextBox_Y.Text <> Nothing Then
+            Curve.InsertPoint(New DataPoint(Convert.ToDouble(TextBox_X.Text), Convert.ToDouble(TextBox_Y.Text)))
+        End If
+    End Sub
+
+    Private Sub Button_RemoveX_Click(sender As Object, e As EventArgs) Handles Button_RemoveX.Click
+        If TextBox_X.Text <> Nothing Then
+            Curve.RemovePointAt(Convert.ToDouble(TextBox_X.Text))
         End If
     End Sub
 End Class

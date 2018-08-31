@@ -24,6 +24,7 @@ Partial Class CurveFitter
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim StripLine1 As System.Windows.Forms.DataVisualization.Charting.StripLine = New System.Windows.Forms.DataVisualization.Charting.StripLine()
         Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.CurveChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
@@ -39,14 +40,40 @@ Partial Class CurveFitter
         Me.CurveChart.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        ChartArea1.AxisX.Maximum = 100.0R
-        ChartArea1.AxisX.Minimum = 0R
-        ChartArea1.AxisX.Title = "RPM %"
+        ChartArea1.AxisX.Interval = 10.0R
+        ChartArea1.AxisX.IntervalOffset = 5.0R
+        ChartArea1.AxisX.MajorGrid.Interval = 20.0R
+        ChartArea1.AxisX.MajorTickMark.Interval = 10.0R
+        ChartArea1.AxisX.MajorTickMark.Size = 2.0!
+        ChartArea1.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.InsideArea
+        ChartArea1.AxisX.Maximum = 105.0R
+        ChartArea1.AxisX.Minimum = -5.0R
+        ChartArea1.AxisX.MinorGrid.Enabled = True
+        ChartArea1.AxisX.MinorGrid.Interval = 5.0R
+        ChartArea1.AxisX.MinorGrid.LineColor = System.Drawing.Color.LightGray
+        ChartArea1.AxisX.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea1.AxisX.MinorTickMark.Enabled = True
+        ChartArea1.AxisX.MinorTickMark.Interval = 5.0R
+        ChartArea1.AxisX.Title = "Input %"
+        ChartArea1.AxisY.Interval = 10.0R
+        ChartArea1.AxisY.IntervalOffset = 10.0R
         ChartArea1.AxisY.IsLabelAutoFit = False
-        ChartArea1.AxisY.Maximum = 100.0R
-        ChartArea1.AxisY.Minimum = 0R
+        ChartArea1.AxisY.MajorGrid.Interval = 20.0R
+        ChartArea1.AxisY.MajorTickMark.Interval = 10.0R
+        ChartArea1.AxisY.MajorTickMark.Size = 2.0!
+        ChartArea1.AxisY.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.InsideArea
+        ChartArea1.AxisY.Maximum = 120.0R
+        ChartArea1.AxisY.Minimum = -10.0R
+        ChartArea1.AxisY.MinorGrid.Enabled = True
+        ChartArea1.AxisY.MinorGrid.Interval = 5.0R
+        ChartArea1.AxisY.MinorGrid.LineColor = System.Drawing.Color.LightGray
+        ChartArea1.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea1.AxisY.MinorTickMark.Enabled = True
+        ChartArea1.AxisY.MinorTickMark.Interval = 5.0R
+        StripLine1.Interval = 10.0R
+        ChartArea1.AxisY.StripLines.Add(StripLine1)
         ChartArea1.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Rotated90
-        ChartArea1.AxisY.Title = "Amperes %"
+        ChartArea1.AxisY.Title = "Output %"
         ChartArea1.BackColor = System.Drawing.Color.White
         ChartArea1.Name = "Main"
         Me.CurveChart.ChartAreas.Add(ChartArea1)
@@ -60,6 +87,7 @@ Partial Class CurveFitter
         Series1.Color = System.Drawing.Color.Orange
         Series1.Legend = "Legend1"
         Series1.Name = "Polynomial"
+        Series1.ToolTip = "X=#VALX{N5}, Y=#VAL{N5}"
         Series2.BorderWidth = 6
         Series2.ChartArea = "Main"
         Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint
@@ -70,6 +98,7 @@ Partial Class CurveFitter
         Series2.MarkerSize = 20
         Series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle
         Series2.Name = "Curve"
+        Series2.ToolTip = "X=#VALX{N5}, Y=#VAL{N5}"
         Me.CurveChart.Series.Add(Series1)
         Me.CurveChart.Series.Add(Series2)
         Me.CurveChart.Size = New System.Drawing.Size(829, 487)

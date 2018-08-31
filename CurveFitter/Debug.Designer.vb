@@ -27,20 +27,25 @@ Partial Class Debug
         Me.Button_ExportEquation = New System.Windows.Forms.Button()
         Me.Button_ExportCode = New System.Windows.Forms.Button()
         Me.GroupBox_Properties = New System.Windows.Forms.GroupBox()
-        Me.Label_PresetProperties = New System.Windows.Forms.Label()
+        Me.Button_Insert = New System.Windows.Forms.Button()
+        Me.TextBox_Y = New System.Windows.Forms.TextBox()
+        Me.TextBox_X = New System.Windows.Forms.TextBox()
+        Me.Label_InsertPoint = New System.Windows.Forms.Label()
+        Me.Label_Y = New System.Windows.Forms.Label()
+        Me.Label_X = New System.Windows.Forms.Label()
         Me.Label_CurveType = New System.Windows.Forms.Label()
         Me.ComboBox_CurveType = New System.Windows.Forms.ComboBox()
-        Me.ListBox_Properties = New System.Windows.Forms.ListBox()
         Me.TextBox_About = New System.Windows.Forms.TextBox()
-        Me.Curve = New CurveFitter()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox_Curve = New System.Windows.Forms.GroupBox()
         Me.Button_ExportCurve = New System.Windows.Forms.Button()
         Me.Button_LoadCurve = New System.Windows.Forms.Button()
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.Curve = New CurveFitter()
+        Me.Button_RemoveX = New System.Windows.Forms.Button()
         Me.GroupBox_Output.SuspendLayout()
         Me.GroupBox_Properties.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox_Curve.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox_Output
@@ -48,7 +53,7 @@ Partial Class Debug
         Me.GroupBox_Output.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox_Output.Controls.Add(Me.Button_ExportEquation)
         Me.GroupBox_Output.Controls.Add(Me.Button_ExportCode)
-        Me.GroupBox_Output.Location = New System.Drawing.Point(941, 244)
+        Me.GroupBox_Output.Location = New System.Drawing.Point(941, 158)
         Me.GroupBox_Output.Name = "GroupBox_Output"
         Me.GroupBox_Output.Size = New System.Drawing.Size(257, 48)
         Me.GroupBox_Output.TabIndex = 1
@@ -76,30 +81,78 @@ Partial Class Debug
         'GroupBox_Properties
         '
         Me.GroupBox_Properties.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox_Properties.Controls.Add(Me.Label_PresetProperties)
+        Me.GroupBox_Properties.Controls.Add(Me.Button_RemoveX)
+        Me.GroupBox_Properties.Controls.Add(Me.Button_Insert)
+        Me.GroupBox_Properties.Controls.Add(Me.TextBox_Y)
+        Me.GroupBox_Properties.Controls.Add(Me.TextBox_X)
+        Me.GroupBox_Properties.Controls.Add(Me.Label_InsertPoint)
+        Me.GroupBox_Properties.Controls.Add(Me.Label_Y)
+        Me.GroupBox_Properties.Controls.Add(Me.Label_X)
         Me.GroupBox_Properties.Controls.Add(Me.Label_CurveType)
         Me.GroupBox_Properties.Controls.Add(Me.ComboBox_CurveType)
-        Me.GroupBox_Properties.Controls.Add(Me.ListBox_Properties)
         Me.GroupBox_Properties.Location = New System.Drawing.Point(941, 12)
         Me.GroupBox_Properties.Name = "GroupBox_Properties"
-        Me.GroupBox_Properties.Size = New System.Drawing.Size(257, 225)
+        Me.GroupBox_Properties.Size = New System.Drawing.Size(257, 140)
         Me.GroupBox_Properties.TabIndex = 2
         Me.GroupBox_Properties.TabStop = False
         Me.GroupBox_Properties.Text = "Properties"
         '
-        'Label_PresetProperties
+        'Button_Insert
         '
-        Me.Label_PresetProperties.AutoSize = True
-        Me.Label_PresetProperties.Location = New System.Drawing.Point(3, 16)
-        Me.Label_PresetProperties.Name = "Label_PresetProperties"
-        Me.Label_PresetProperties.Size = New System.Drawing.Size(90, 13)
-        Me.Label_PresetProperties.TabIndex = 5
-        Me.Label_PresetProperties.Text = "Preset Properties:"
+        Me.Button_Insert.Location = New System.Drawing.Point(176, 111)
+        Me.Button_Insert.Name = "Button_Insert"
+        Me.Button_Insert.Size = New System.Drawing.Size(75, 23)
+        Me.Button_Insert.TabIndex = 10
+        Me.Button_Insert.Text = "Insert"
+        Me.Button_Insert.UseVisualStyleBackColor = True
+        '
+        'TextBox_Y
+        '
+        Me.TextBox_Y.Location = New System.Drawing.Point(130, 85)
+        Me.TextBox_Y.MaxLength = 20
+        Me.TextBox_Y.Name = "TextBox_Y"
+        Me.TextBox_Y.Size = New System.Drawing.Size(121, 20)
+        Me.TextBox_Y.TabIndex = 9
+        '
+        'TextBox_X
+        '
+        Me.TextBox_X.Location = New System.Drawing.Point(6, 85)
+        Me.TextBox_X.MaxLength = 20
+        Me.TextBox_X.Name = "TextBox_X"
+        Me.TextBox_X.Size = New System.Drawing.Size(121, 20)
+        Me.TextBox_X.TabIndex = 8
+        '
+        'Label_InsertPoint
+        '
+        Me.Label_InsertPoint.AutoSize = True
+        Me.Label_InsertPoint.Location = New System.Drawing.Point(3, 56)
+        Me.Label_InsertPoint.Name = "Label_InsertPoint"
+        Me.Label_InsertPoint.Size = New System.Drawing.Size(63, 13)
+        Me.Label_InsertPoint.TabIndex = 7
+        Me.Label_InsertPoint.Text = "Insert Point:"
+        '
+        'Label_Y
+        '
+        Me.Label_Y.AutoSize = True
+        Me.Label_Y.Location = New System.Drawing.Point(127, 69)
+        Me.Label_Y.Name = "Label_Y"
+        Me.Label_Y.Size = New System.Drawing.Size(17, 13)
+        Me.Label_Y.TabIndex = 6
+        Me.Label_Y.Text = "Y:"
+        '
+        'Label_X
+        '
+        Me.Label_X.AutoSize = True
+        Me.Label_X.Location = New System.Drawing.Point(3, 69)
+        Me.Label_X.Name = "Label_X"
+        Me.Label_X.Size = New System.Drawing.Size(17, 13)
+        Me.Label_X.TabIndex = 5
+        Me.Label_X.Text = "X:"
         '
         'Label_CurveType
         '
         Me.Label_CurveType.AutoSize = True
-        Me.Label_CurveType.Location = New System.Drawing.Point(3, 182)
+        Me.Label_CurveType.Location = New System.Drawing.Point(3, 16)
         Me.Label_CurveType.Name = "Label_CurveType"
         Me.Label_CurveType.Size = New System.Drawing.Size(65, 13)
         Me.Label_CurveType.TabIndex = 4
@@ -109,70 +162,36 @@ Partial Class Debug
         '
         Me.ComboBox_CurveType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox_CurveType.FormattingEnabled = True
-        Me.ComboBox_CurveType.Items.AddRange(New Object() {"Linear", "Exponential", "Logarithmic"})
-        Me.ComboBox_CurveType.Location = New System.Drawing.Point(6, 198)
+        Me.ComboBox_CurveType.Items.AddRange(New Object() {"Linear", "Exponential", "Logarithmic", "Empty"})
+        Me.ComboBox_CurveType.Location = New System.Drawing.Point(6, 32)
         Me.ComboBox_CurveType.Name = "ComboBox_CurveType"
         Me.ComboBox_CurveType.Size = New System.Drawing.Size(245, 21)
         Me.ComboBox_CurveType.TabIndex = 3
-        '
-        'ListBox_Properties
-        '
-        Me.ListBox_Properties.Enabled = False
-        Me.ListBox_Properties.FormattingEnabled = True
-        Me.ListBox_Properties.Items.AddRange(New Object() {"AutoSelectDegrees" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "True", "BorderBackColor" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "White", "CurveColor" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "Orange", "DotColor" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "Red", "LiveCurve" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "True", "MaxDegrees" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "10", "MinDegrees" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "3", "MultiDragFactor" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "0.3", "UseSinglePrecision" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "True", "XAxisTitle" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "RPM %", "YAxisTitle" & Global.Microsoft.VisualBasic.ChrW(9) & Global.Microsoft.VisualBasic.ChrW(9) & "Amperes %"})
-        Me.ListBox_Properties.Location = New System.Drawing.Point(6, 32)
-        Me.ListBox_Properties.Name = "ListBox_Properties"
-        Me.ListBox_Properties.Size = New System.Drawing.Size(245, 147)
-        Me.ListBox_Properties.TabIndex = 0
         '
         'TextBox_About
         '
         Me.TextBox_About.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox_About.Location = New System.Drawing.Point(941, 352)
+        Me.TextBox_About.Location = New System.Drawing.Point(941, 266)
         Me.TextBox_About.Multiline = True
         Me.TextBox_About.Name = "TextBox_About"
         Me.TextBox_About.ReadOnly = True
         Me.TextBox_About.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox_About.Size = New System.Drawing.Size(257, 197)
+        Me.TextBox_About.Size = New System.Drawing.Size(257, 283)
         Me.TextBox_About.TabIndex = 3
         Me.TextBox_About.Text = resources.GetString("TextBox_About.Text")
         '
-        'Curve
+        'GroupBox_Curve
         '
-        Me.Curve.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Curve.AutoSelectDegrees = True
-        Me.Curve.BorderBackColor = System.Drawing.Color.White
-        Me.Curve.CurveColor = System.Drawing.Color.Orange
-        Me.Curve.CurveType = GraphType.Logarithmic
-        Me.Curve.DotColor = System.Drawing.Color.Red
-        Me.Curve.LiveCurve = True
-        Me.Curve.Location = New System.Drawing.Point(12, 12)
-        Me.Curve.MaxDegrees = 10
-        Me.Curve.MinDegrees = 5
-        Me.Curve.MultiDragFactor = 0.3R
-        Me.Curve.Name = "Curve"
-        Me.Curve.PolynomialCoefficients = CType(resources.GetObject("Curve.PolynomialCoefficients"), System.Collections.Generic.List(Of Double))
-        Me.Curve.PolynomialDegrees = 6
-        Me.Curve.Size = New System.Drawing.Size(923, 537)
-        Me.Curve.TabIndex = 0
-        Me.Curve.UseSinglePrecision = True
-        Me.Curve.XAxisTitle = "Input %"
-        Me.Curve.YAxisTitle = "Output %"
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox1.Controls.Add(Me.Button_ExportCurve)
-        Me.GroupBox1.Controls.Add(Me.Button_LoadCurve)
-        Me.GroupBox1.Location = New System.Drawing.Point(941, 298)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(257, 48)
-        Me.GroupBox1.TabIndex = 2
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Graph"
+        Me.GroupBox_Curve.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox_Curve.Controls.Add(Me.Button_ExportCurve)
+        Me.GroupBox_Curve.Controls.Add(Me.Button_LoadCurve)
+        Me.GroupBox_Curve.Location = New System.Drawing.Point(941, 212)
+        Me.GroupBox_Curve.Name = "GroupBox_Curve"
+        Me.GroupBox_Curve.Size = New System.Drawing.Size(257, 48)
+        Me.GroupBox_Curve.TabIndex = 2
+        Me.GroupBox_Curve.TabStop = False
+        Me.GroupBox_Curve.Text = "Curve"
         '
         'Button_ExportCurve
         '
@@ -202,12 +221,45 @@ Partial Class Debug
         Me.SaveFileDialog.Filter = "Curve File|*.curve"
         Me.SaveFileDialog.Title = "Export curve..."
         '
+        'Curve
+        '
+        Me.Curve.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Curve.AutoSelectDegrees = True
+        Me.Curve.BorderBackColor = System.Drawing.Color.White
+        Me.Curve.CurveColor = System.Drawing.Color.Orange
+        Me.Curve.CurveType = GraphType.Logarithmic
+        Me.Curve.DotColor = System.Drawing.Color.Red
+        Me.Curve.LiveCurve = True
+        Me.Curve.Location = New System.Drawing.Point(12, 12)
+        Me.Curve.MaxDegrees = 10
+        Me.Curve.MinDegrees = 5
+        Me.Curve.MultiDragFactor = 0.3R
+        Me.Curve.Name = "Curve"
+        Me.Curve.PolynomialCoefficients = CType(resources.GetObject("Curve.PolynomialCoefficients"), System.Collections.Generic.List(Of Double))
+        Me.Curve.PolynomialDegrees = 6
+        Me.Curve.Size = New System.Drawing.Size(923, 537)
+        Me.Curve.TabIndex = 0
+        Me.Curve.UseSinglePrecision = True
+        Me.Curve.XAxisTitle = "Input %"
+        Me.Curve.YAxisTitle = "Output %"
+        '
+        'Button_RemoveX
+        '
+        Me.Button_RemoveX.Location = New System.Drawing.Point(6, 111)
+        Me.Button_RemoveX.Name = "Button_RemoveX"
+        Me.Button_RemoveX.Size = New System.Drawing.Size(75, 23)
+        Me.Button_RemoveX.TabIndex = 11
+        Me.Button_RemoveX.Text = "Remove X"
+        Me.Button_RemoveX.UseVisualStyleBackColor = True
+        '
         'Debug
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1210, 561)
-        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.GroupBox_Curve)
         Me.Controls.Add(Me.TextBox_About)
         Me.Controls.Add(Me.GroupBox_Properties)
         Me.Controls.Add(Me.GroupBox_Output)
@@ -219,7 +271,7 @@ Partial Class Debug
         Me.GroupBox_Output.ResumeLayout(False)
         Me.GroupBox_Properties.ResumeLayout(False)
         Me.GroupBox_Properties.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox_Curve.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -228,16 +280,21 @@ Partial Class Debug
     Friend WithEvents Curve As CurveFitter
     Friend WithEvents GroupBox_Output As GroupBox
     Friend WithEvents GroupBox_Properties As GroupBox
-    Friend WithEvents Label_PresetProperties As Label
     Friend WithEvents Label_CurveType As Label
     Friend WithEvents ComboBox_CurveType As ComboBox
-    Friend WithEvents ListBox_Properties As ListBox
     Friend WithEvents Button_ExportCode As Button
     Friend WithEvents Button_ExportEquation As Button
     Friend WithEvents TextBox_About As TextBox
-    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents GroupBox_Curve As GroupBox
     Friend WithEvents Button_ExportCurve As Button
     Friend WithEvents Button_LoadCurve As Button
     Friend WithEvents OpenFileDialog As OpenFileDialog
     Friend WithEvents SaveFileDialog As SaveFileDialog
+    Friend WithEvents Label_Y As Label
+    Friend WithEvents Label_X As Label
+    Friend WithEvents Button_Insert As Button
+    Friend WithEvents TextBox_Y As TextBox
+    Friend WithEvents TextBox_X As TextBox
+    Friend WithEvents Label_InsertPoint As Label
+    Friend WithEvents Button_RemoveX As Button
 End Class
