@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Forms.DataVisualization.Charting
+Imports CurveFitter.CurveFitter
 
 Public Class Debug
     Private Sub Debug_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -23,7 +24,7 @@ Public Class Debug
     End Sub
 
     Private Sub Button_ExportCode_Click(sender As Object, e As EventArgs) Handles Button_ExportCode.Click
-        Clipboard.SetText(Curve.ExportCCode(False))
+        Clipboard.SetText(Curve.ExportCCode())
         MsgBox("Code copied to clipboard.", MsgBoxStyle.Information, "Success")
     End Sub
 

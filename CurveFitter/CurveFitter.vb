@@ -1,14 +1,14 @@
 ﻿Imports CurveFitter.CurveFunctions
 Imports System.Windows.Forms.DataVisualization.Charting
 
-Public Enum GraphType
-    Linear
-    Exponential
-    Logarithmic
-    Empty
-End Enum
-
 Public Class CurveFitter
+
+    Public Enum GraphType
+        Linear
+        Exponential
+        Logarithmic
+        Empty
+    End Enum
 
     Public Event CurveUpdated(sender As Object, e As EventArgs)
 
@@ -269,7 +269,7 @@ Public Class CurveFitter
 
     'Public Property Equation As String
     '    Get
-    '        Return GetEquation()
+    ' Return GetEquation()
     '    End Get
     '    Set(value As String)
 
@@ -444,40 +444,16 @@ Public Class CurveFitter
         Return Result
     End Function
 
-    Public Function ExportCCode(ByVal Optional CoefficientsOnly As Boolean = True) As String
-        Dim Result As String = "// Polynomial coefficients for specific curve" & vbNewLine
-        Result &= "float PolynomialCoefficients[" & _PolynomialCoefficients.Count & "] = {"
-        Dim Row As Integer = 0
-        Dim SingleList As List(Of Single) = DoubleToSingleList(_PolynomialCoefficients)
-        For Each Item As Single In SingleList
-            Result &= Item.ToString & ", "
-            Row += 1
-            If Row = 3 Then
-                Result &= vbNewLine & vbTab & vbTab & vbTab & vbTab & vbTab
-                Row = 0
-            End If
-        Next
-        Result = Result.Substring(0, Result.Length - 2)
+    Public Function ExportCCode() As String
+        Dim Result As String = "// Input range: [0.0, 1.0]. Output range: [0.0, 1.0]" & vbNewLine
+        Result &= "float Curve_Name(float Input) {" & vbNewLine
+        Result &= vbTab & "float x = Input * 100.0;" & vbNewLine
+        Result &= vbTab & "float Output = " & GetEquation() & ";" & vbNewLine
+        Result &= vbTab & "Output /= 100.0;" & vbNewLine
+        Result &= vbTab & "if (Output < 0.0) { Output = 0.0 };" & vbNewLine
+        Result &= vbTab & "if (Output > 1.0) { Output = 1.0 };" & vbNewLine
+        Result &= vbTab & "return Output;" & vbNewLine
         Result &= "}"
-        If Not CoefficientsOnly Then
-            Result &= vbNewLine & vbNewLine
-            Result &= "// Function to return the max output current scalar." & vbNewLine
-            Result &= "// Input x = RPM%, Range = [0.0, 100.0] ( % )" & vbNewLine
-            Result &= "// Output range = [0.0, 100.0] ( % )" & vbNewLine
-            Result &= "float GetCurrentFromRPM_Relative(float x) {" & vbNewLine
-            Result &= vbTab & "float total = 0.0;" & vbNewLine
-            Result &= vbTab & "float x_factor = 1.0;" & vbNewLine
-            Result &= vbTab & "for (int i = 0; i < sizeof(PolynomialCoefficients)/sizeof(float) - 1; i++) {" & vbNewLine
-            Result &= vbTab & vbTab & "total += x_factor * PolynomialCoefficients[i];" & vbNewLine
-            Result &= vbTab & vbTab & "x_factor *= x;" & vbNewLine
-            Result &= vbTab & "}" & vbNewLine
-            Dim MaxY As Double = CurveChart.ChartAreas(0).AxisY.Maximum
-            Dim MinY As Double = CurveChart.ChartAreas(0).AxisY.Minimum
-            Result &= vbTab & "if (total > 100.0) { total = 100.0; }" & vbNewLine
-            Result &= vbTab & "if (total < 0.0) { total = 0.0; }" & vbNewLine
-            Result &= vbTab & "return total;" & vbNewLine
-            Result &= "}"
-        End If
         Return Result
     End Function
 
@@ -514,5 +490,23 @@ Public Class CurveFitter
             End If
         Next
         FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
+    End Sub
+
+    Private Sub CurveColorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CurveColorToolStripMenuItem.Click
+        ColorDialog.Color = CurveColor
+        ColorDialog.ShowDialog()
+        CurveColor = ColorDialog.Color
+    End Sub
+
+    Private Sub DotColorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DotColorToolStripMenuItem.Click
+        ColorDialog.Color = DotColor
+        ColorDialog.ShowDialog()
+        DotColor = ColorDialog.Color
+    End Sub
+
+    Private Sub BackColorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackColorToolStripMenuItem.Click
+        ColorDialog.Color = BackColor
+        ColorDialog.ShowDialog()
+        BackColor = ColorDialog.Color
     End Sub
 End Class

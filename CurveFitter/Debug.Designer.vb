@@ -229,7 +229,7 @@ Partial Class Debug
         Me.Curve.AutoSelectDegrees = True
         Me.Curve.BorderBackColor = System.Drawing.Color.White
         Me.Curve.CurveColor = System.Drawing.Color.Orange
-        Me.Curve.CurveType = GraphType.Logarithmic
+        Me.Curve.CurveType = CurveFitter.GraphType.Logarithmic
         Me.Curve.DotColor = System.Drawing.Color.Red
         Me.Curve.LiveCurve = True
         Me.Curve.Location = New System.Drawing.Point(12, 12)
