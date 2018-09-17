@@ -65,12 +65,16 @@ Public Class Debug
         End If
     End Sub
 
+    Private Function IsDecimal(ByVal Data As Char, ByVal Text As String) As Boolean
+        Return Not (Char.IsDigit(Data) Or Asc(Data) = 8 Or ((Data = "." Or Data = ",") And (Text.IndexOf(".") = -1 And Text.IndexOf(",") = -1)))
+    End Function
+
     Private Sub TextBox_X_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox_X.KeyPress
-        e.Handled = Not (Char.IsDigit(e.KeyChar) Or Asc(e.KeyChar) = 8 Or ((e.KeyChar = "." Or e.KeyChar = ",") And (sender.Text.IndexOf(".") = -1 And sender.Text.IndexOf(",") = -1)))
+        e.Handled = IsDecimal(e.KeyChar, sender.Text)
     End Sub
 
     Private Sub TextBox_Y_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox_Y.KeyPress
-        e.Handled = Not (Char.IsDigit(e.KeyChar) Or Asc(e.KeyChar) = 8 Or ((e.KeyChar = "." Or e.KeyChar = ",") And (sender.Text.IndexOf(".") = -1 And sender.Text.IndexOf(",") = -1)))
+        e.Handled = IsDecimal(e.KeyChar, sender.Text)
     End Sub
 
     Private Sub Button_Insert_Click(sender As Object, e As EventArgs) Handles Button_Insert.Click
@@ -83,5 +87,29 @@ Public Class Debug
         If TextBox_X.Text <> Nothing Then
             Curve.RemovePointAt(Convert.ToDouble(TextBox_X.Text))
         End If
+    End Sub
+
+    Private Sub TextBox_YMax_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox_YMax.KeyPress
+        e.Handled = IsDecimal(e.KeyChar, sender.Text)
+    End Sub
+
+    Private Sub TextBox_XMax_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox_XMax.KeyPress
+        e.Handled = IsDecimal(e.KeyChar, sender.Text)
+    End Sub
+
+    Private Sub TextBox_DesiredX_TextChanged(sender As Object, e As EventArgs) Handles TextBox_DesiredX.TextChanged
+        TextBox_XPercent.Text = CDbl(TextBox_DesiredX.Text) * 100.0 / CDbl(TextBox_XMax.Text)
+    End Sub
+
+    Private Sub TextBox_DesiredY_TextChanged(sender As Object, e As EventArgs) Handles TextBox_DesiredY.TextChanged
+        TextBox_YPercent.Text = CDbl(TextBox_DesiredY.Text) * 100.0 / CDbl(TextBox_YMax.Text)
+    End Sub
+
+    Private Sub TextBox_DesiredX_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox_DesiredX.KeyPress
+        e.Handled = IsDecimal(e.KeyChar, sender.Text)
+    End Sub
+
+    Private Sub TextBox_DesiredY_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox_DesiredY.KeyPress
+        e.Handled = IsDecimal(e.KeyChar, sender.Text)
     End Sub
 End Class

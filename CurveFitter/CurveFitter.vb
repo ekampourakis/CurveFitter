@@ -146,6 +146,7 @@ Public Class CurveFitter
         End Get
         Set(value As Boolean)
             _LiveCurve = value
+            LiveCurveToolStripMenuItem.Checked = value
             If _LiveCurve Then
                 FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
             Else
@@ -191,7 +192,7 @@ Public Class CurveFitter
         SelectedPointIndex = -1
         IsDraggingPoint = False
         IsMultiDragging = False
-        If AutoSelectDegrees Then
+        If LiveCurve And AutoSelectDegrees Then
             FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
         End If
     End Sub
@@ -450,8 +451,8 @@ Public Class CurveFitter
         Result &= vbTab & "float x = Input * 100.0;" & vbNewLine
         Result &= vbTab & "float Output = " & GetEquation() & ";" & vbNewLine
         Result &= vbTab & "Output /= 100.0;" & vbNewLine
-        Result &= vbTab & "if (Output < 0.0) { Output = 0.0 };" & vbNewLine
-        Result &= vbTab & "if (Output > 1.0) { Output = 1.0 };" & vbNewLine
+        Result &= vbTab & "if (Output < 0.0) { Output = 0.0; }" & vbNewLine
+        Result &= vbTab & "if (Output > 1.0) { Output = 1.0; }" & vbNewLine
         Result &= vbTab & "return Output;" & vbNewLine
         Result &= "}"
         Return Result
@@ -477,7 +478,7 @@ Public Class CurveFitter
             End If
         Next
         If Not Overlap Then
-            CurveChart.Series(1).Points.Add(Point)
+            CurveChart.Series(1).Points.Insert(Point.XValue, Point)
         End If
         FitCurve(If(AutoSelectDegrees, AutoTuneDegree(), _PolynomialDegrees))
     End Sub
@@ -508,5 +509,15 @@ Public Class CurveFitter
         ColorDialog.Color = BackColor
         ColorDialog.ShowDialog()
         BackColor = ColorDialog.Color
+    End Sub
+
+    Private Sub LiveCurveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LiveCurveToolStripMenuItem.Click
+        If LiveCurveToolStripMenuItem.Checked Then
+            LiveCurveToolStripMenuItem.Checked = False
+            LiveCurve = False
+        Else
+            LiveCurveToolStripMenuItem.Checked = True
+            LiveCurve = True
+        End If
     End Sub
 End Class

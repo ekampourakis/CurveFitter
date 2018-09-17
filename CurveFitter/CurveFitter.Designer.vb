@@ -36,6 +36,8 @@ Partial Class CurveFitter
         Me.DotColorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BackColorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ColorDialog = New System.Windows.Forms.ColorDialog()
+        Me.LiveCurveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         CType(Me.CurveChart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip.SuspendLayout()
         Me.SuspendLayout()
@@ -109,49 +111,60 @@ Partial Class CurveFitter
         '
         'MenuStrip
         '
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem_IncreasePrecision, Me.ToolStripMenuItem_DecreasePrecision, Me.ToolStripSeparator1, Me.CurveColorToolStripMenuItem, Me.DotColorToolStripMenuItem, Me.BackColorToolStripMenuItem})
+        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem_IncreasePrecision, Me.ToolStripMenuItem_DecreasePrecision, Me.ToolStripSeparator1, Me.CurveColorToolStripMenuItem, Me.DotColorToolStripMenuItem, Me.BackColorToolStripMenuItem, Me.ToolStripSeparator2, Me.LiveCurveToolStripMenuItem})
         Me.MenuStrip.Name = "MenuStrip"
-        Me.MenuStrip.Size = New System.Drawing.Size(173, 142)
+        Me.MenuStrip.Size = New System.Drawing.Size(181, 170)
         '
         'ToolStripMenuItem_IncreasePrecision
         '
         Me.ToolStripMenuItem_IncreasePrecision.Name = "ToolStripMenuItem_IncreasePrecision"
-        Me.ToolStripMenuItem_IncreasePrecision.Size = New System.Drawing.Size(172, 22)
+        Me.ToolStripMenuItem_IncreasePrecision.Size = New System.Drawing.Size(180, 22)
         Me.ToolStripMenuItem_IncreasePrecision.Text = "Increase Precision"
         '
         'ToolStripMenuItem_DecreasePrecision
         '
         Me.ToolStripMenuItem_DecreasePrecision.Name = "ToolStripMenuItem_DecreasePrecision"
-        Me.ToolStripMenuItem_DecreasePrecision.Size = New System.Drawing.Size(172, 22)
+        Me.ToolStripMenuItem_DecreasePrecision.Size = New System.Drawing.Size(180, 22)
         Me.ToolStripMenuItem_DecreasePrecision.Text = "Decrease Precision"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(169, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(177, 6)
         '
         'CurveColorToolStripMenuItem
         '
         Me.CurveColorToolStripMenuItem.Name = "CurveColorToolStripMenuItem"
-        Me.CurveColorToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.CurveColorToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.CurveColorToolStripMenuItem.Text = "Curve Color"
         '
         'DotColorToolStripMenuItem
         '
         Me.DotColorToolStripMenuItem.Name = "DotColorToolStripMenuItem"
-        Me.DotColorToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.DotColorToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.DotColorToolStripMenuItem.Text = "Dot Color"
         '
         'BackColorToolStripMenuItem
         '
         Me.BackColorToolStripMenuItem.Name = "BackColorToolStripMenuItem"
-        Me.BackColorToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.BackColorToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.BackColorToolStripMenuItem.Text = "Back Color"
         '
         'ColorDialog
         '
         Me.ColorDialog.AnyColor = True
         Me.ColorDialog.FullOpen = True
+        '
+        'LiveCurveToolStripMenuItem
+        '
+        Me.LiveCurveToolStripMenuItem.Name = "LiveCurveToolStripMenuItem"
+        Me.LiveCurveToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.LiveCurveToolStripMenuItem.Text = "Live Curve"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(177, 6)
         '
         'CurveFitter
         '
@@ -175,4 +188,6 @@ Partial Class CurveFitter
     Friend WithEvents DotColorToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ColorDialog As ColorDialog
     Friend WithEvents BackColorToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+    Friend WithEvents LiveCurveToolStripMenuItem As ToolStripMenuItem
 End Class
